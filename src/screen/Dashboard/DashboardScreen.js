@@ -15,6 +15,10 @@ export default class Dashboard extends Component<Props, State> {
         };
     }
 
+    proceed(){
+        this.props.navigation.goBack()
+    }
+
     render() {
         return (
             <View style={styles.container}>

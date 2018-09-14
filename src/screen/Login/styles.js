@@ -5,12 +5,23 @@ const styles: any = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: 'black',
+        
       },
-      welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-      },
+  btn: {
+    width: "70%"
+  },
+  btnText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16
+  },
+  input: {
+    color: "white"
+  },
+  linkTxt: {
+    color: "white",
+    fontSize: 14
+  }
 });
 export default styles;

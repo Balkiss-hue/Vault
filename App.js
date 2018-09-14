@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import { Root } from "native-base";
 import { StackNavigator, DrawerNavigator } from "react-navigation";
 import Login from "./src/screen/Login/LoginScreen";
 import Dashboard from "./src/screen/Dashboard/DashboardScreen";
@@ -19,4 +20,7 @@ const App = StackNavigator(
   }
 );
 
-export default App;
+export default () =>
+  <Root>
+    <App />
+  </Root>;
