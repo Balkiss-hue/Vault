@@ -20,8 +20,9 @@ const styles: any = StyleSheet.create({
     color: "white"
   },
   linkTxt: {
-    color: "white",
-    fontSize: 14
+    color: "red",
+    fontSize: 14,
+    textAlign: "center"
   }
 });
 export default styles;

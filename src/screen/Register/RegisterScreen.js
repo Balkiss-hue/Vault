@@ -14,31 +14,12 @@ export default class Login extends Component<Props, State> {
         
         this.state = {
             btnClick: false,
-            email: "",
+            email: "", 
+            name: "",
             password: ""
         };
     }
 
-    // componentDidMount() {
-    //     BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
-    // }
-
-    // componentWillMount() {
-    //     BackHandler.removeEventListener();
-    // }
-
-    onBackButtonPressAndroid = () => {
-            Alert.alert(
-                'Cancel',
-                'Are you sure you want to go back',
-                [
-                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                    { text: 'OK', onPress: () => { BackHandler.exitApp() } },
-                ],
-                { cancelable: false }
-            )
-            return true;
-    };
 
     proceed() {
         if (this.state.email != "" && this.state.password != "") {
@@ -60,7 +41,7 @@ export default class Login extends Component<Props, State> {
     }
 
     register() {
-        this.props.navigation.navigate("Register");
+        alert("coming soon");
     }
 
     render() {
@@ -75,12 +56,30 @@ export default class Login extends Component<Props, State> {
                         <Form style={{ justifyContent: "space-between" }}>
 
                             <Item regular style={styles.input}>
+                                <Icon name='person' style={{ color: 'white' }} />
+                                <Input placeholder="Fullname"
+                                    placeholderTextColor="white"
+                                    keyboardType="default"
+                                    style={{ color: "white" }}
+                                    onChangeText={(name) => this.setState({ name })} value={this.state.name} />
+                            </Item>
+
+                            <Item regular style={styles.input}>
                                 <Icon name='mail' style={{ color: 'white' }} />
                                 <Input placeholder="Email"
                                     placeholderTextColor="white"
                                     keyboardType="email-address"
                                     style={{ color: "white" }}
                                     onChangeText={(email) => this.setState({ email })} value={this.state.email} />
+                            </Item>
+
+                            <Item regular style={styles.input}>
+                                <Icon name='keypad' style={{ color: 'white' }} />
+                                <Input placeholder="Phone number"
+                                    placeholderTextColor="white"
+                                    keyboardType="phone-pad"
+                                    style={{ color: "white" }}
+                                    onChangeText={(phone) => this.setState({ phone })} value={this.state.phone} />
                             </Item>
 
                             <Item regular style={styles.input}>
@@ -96,19 +95,13 @@ export default class Login extends Component<Props, State> {
                             {this.state.btnClick ? <Spinner color="red" /> :
                                 <Button block danger
                                     onPress={() => this.proceed()}>
-                                    <Text style={styles.btnText}> proceed </Text>
+                                    <Text style={styles.btnText}> Register </Text>
                                 </Button>}
                         </Form>
-                        <Button transparent
-                        onPress={() => this.forgot()}>
-                            <Text style={styles.linkTxt}>Forgot your password press here!!!</Text>
-                        </Button>
+                        
                     </View>
                     <View style={{ justifyContent: "flex-end", flex: 1 }}>
-                        <Button transparent 
-                        onPress={() => this.register()}>
-                            <Text style={styles.linkTxt}>new here?  touch to Register!!!</Text>
-                        </Button>
+                        
                     </View>
                 </Container>
             </KeyboardAwareScrollView>

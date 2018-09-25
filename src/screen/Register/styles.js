@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 const styles: any = StyleSheet.create({
-    container: {
+	container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -9,7 +9,7 @@ const styles: any = StyleSheet.create({
         
       },
   btn: {
-    width: "80%"
+    width: "70%"
   },
   btnText: {
     color: "white",
@@ -19,20 +19,8 @@ const styles: any = StyleSheet.create({
   input: {
     color: "white"
   },
-  header: {
-      backgroundColor: "black",
-      borderBottomColor: "red",
-	  borderBottomWidth: 1,
-  },
-  txt: {
-      color: "white",
-      fontSize: 18,
-      textAlign: "center",
-      fontWeight: "500",
-      marginBottom: 50
-  },
   linkTxt: {
-    color: "red",
+    color: "white",
     fontSize: 14
   }
 });
