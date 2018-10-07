@@ -5,23 +5,24 @@ const styles: any = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'black',
+        backgroundColor: '#EEEEEE',
         
       },
   btn: {
-    width: "70%"
+    backgroundColor: "#263238",
+    alignItems: "center",
+    marginTop:10,
+    marginBottom:5
   },
   btnText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 20
   },
   input: {
-    color: "white"
-  },
-  linkTxt: {
-    color: "white",
-    fontSize: 14
+    //color: "white"
+    marginBottom:5,
+    borderBottomWidth:2
   }
 });
 export default styles;

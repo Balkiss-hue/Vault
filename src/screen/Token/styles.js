@@ -1,39 +1,38 @@
 import { StyleSheet } from "react-native";
 
 const styles: any = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'black',
-        
-      },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EEEEEE',
+  },
   btn: {
-    width: "80%"
+    backgroundColor: "#263238",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 5
   },
   btnText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 20,
   },
   input: {
-    color: "white"
-  },
-  header: {
-      backgroundColor: "black",
-      borderBottomColor: "red",
-	  borderBottomWidth: 1,
+    //color: "white"
+    marginBottom: 10,
+    borderBottomWidth: 2
   },
   txt: {
-      color: "white",
-      fontSize: 18,
-      textAlign: "center",
-      fontWeight: "500",
-      marginBottom: 50
+    //color: "white",
+    fontSize: 14,
+    textAlign: "center",
+    fontWeight: "bold",
   },
   linkTxt: {
-    color: "red",
-    fontSize: 14
+    color: "#263238",
+    fontWeight: "bold",
+    fontSize: 16
   }
 });
 export default styles;
