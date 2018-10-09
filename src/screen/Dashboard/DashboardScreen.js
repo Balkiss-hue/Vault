@@ -4,9 +4,14 @@ import { Text, View, Alert, FlatList, StatusBar } from 'react-native';
 import { Container, Header, Content, Right, Body, Button, Icon, Card, CardItem, Title, Left, Subtitle, List, ListItem, Thumbnail, Fab } from "native-base";
 import styles from "./styles";
 
+import { DrawerActions } from 'react-navigation';
 
 type Props = {};
 export default class Dashboard extends Component<Props, State> {
+    
+    static navigationOptions = {
+        drawerIcon:(<Icon name="home" />)
+    }
 
     constructor(props) {
         super(props);
@@ -15,12 +20,7 @@ export default class Dashboard extends Component<Props, State> {
             active: 'true'
         };
     }
-    static navigationOptions = {
-        drawerLabel: 'Home'
-    };
-    back() {
-        this.props.navigation.goBack();
-    }
+    
     signout() {
         Alert.alert(
             'Cancel',
@@ -32,11 +32,9 @@ export default class Dashboard extends Component<Props, State> {
             { cancelable: false }
         )
     }
-    menu() {
-        this.props.navigation.navigate("DrawerOpen");
-    }
 
     render() {
+        let uri = `https://facebook.github.io/react/logo-og.png`;
         return (
             <Container style={styles.container}>
                 <StatusBar
@@ -44,18 +42,12 @@ export default class Dashboard extends Component<Props, State> {
                     barStyle="light-content"
                 />
                 <Header style={styles.header}>
-                    <Left>
-                        <Button transparent
-                            onPress={() => this.back()}>
-                            <Icon name="arrow-back" />
-                        </Button>
-                    </Left>
-                    <Body style={{}}>
+                    <Body style={{marginLeft:10}}>
                         <Title>Welcome Attasiem</Title>
                         <Subtitle>Dashboard</Subtitle>
                     </Body>
                     <Right>
-                        <Button transparent>
+                        <Button transparent onPress={() => this.props.navigation.openDrawer() } >
                             <Icon name="menu" />
                         </Button>
                     </Right>
@@ -69,7 +61,7 @@ export default class Dashboard extends Component<Props, State> {
                                     <List>
                                         <ListItem thumbnail>
                                             <Left>
-                                                <Thumbnail square source={{ uri: 'Image URL' }} />
+                                                <Thumbnail square source={{ uri: uri }} />
                                             </Left>
                                             <Body>
                                                 <Text>Attasiem</Text>
@@ -102,3 +94,4 @@ export default class Dashboard extends Component<Props, State> {
         );
     }
 }
+

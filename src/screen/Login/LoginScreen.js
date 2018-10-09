@@ -45,7 +45,8 @@ export default class Login extends Component<Props, State> {
    async proceed() {
         if (this.state.email != "" && this.state.password != "") {
             this.setState({ btnClicked: !this.state.btnClicked });
-            let url = `http://httpbin.org/post`
+            let url = `http://httpbin.org/post`;
+            // this.props.navigation.navigate("Dashboard");
             try {
                 const data = await axios.post(url,{
                     email: this.state.email,
@@ -84,7 +85,7 @@ export default class Login extends Component<Props, State> {
             <KeyboardAwareScrollView>
                 <Container style={styles.container}>
                     <View style={{ justifyContent: "center", flex: 1, }}>
-                        <Text style={{ fontSize: 100, fontWeight: "400", color: "#424242" }}>V<Icon name='lock' style={{ fontSize: 70, color: '#424242' }} />ult</Text>
+                        <Text style={{ fontSize: 100, fontWeight: "400", color: "#263238" }}>V<Icon name='lock' style={{ fontSize: 70, color: '#263238' }} />ult</Text>
                     </View>
 
                     <View style={{ flex: 2, width: "80%", justifyContent: "center" }}>
@@ -115,7 +116,7 @@ export default class Login extends Component<Props, State> {
                                 <Button block
                                     style={styles.btn}
                                     onPress={() => this.proceed()}>
-                                    <Text style={styles.btnText}> LOGIN </Text>
+                                    <Text style={styles.btnText}> LOG IN </Text>
                                 </Button>}
                             <Button transparent
                                 onPress={() => this.forgot()}>
