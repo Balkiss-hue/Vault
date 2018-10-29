@@ -1,10 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, View, BackHandler, Alert } from 'react-native';
+import { Text, View, BackHandler, Alert, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Container, Header, Content,Label, Form, Item, Input, Spinner, Button, Icon, Toast, ToastAndroid } from "native-base";
+import { Container, Header, Content, Label, Form, Item, Input, Spinner, Button, Icon, Toast, ToastAndroid } from "native-base";
 import styles from "./styles";
-
 import axios from "axios";
 
 
@@ -18,48 +17,33 @@ export default class Login extends Component<Props, State> {
             btnClicked: false,
             email: "",
             name: "",
-            password: ""
+            password: "",
+            phone: ""
         };
     }
 
+    _addToDatabase(navigate, userId, name, email, password, phone) {
 
-    async proceed() {
-        if (this.state.email != "" && this.state.password != "") {
-            this.setState({ btnClicked: !this.state.btnClicked });
-            let url = `http://httpbin.org/post`
-            try {
-                const data = await axios.post(url,{
-                    email: this.state.email,
-                    password: this.state.password
-                })
-                this.setState({ btnClicked: !this.state.btnClicked });
-                console.log(data);
-                this.props.navigation.navigate("Token");
-            } catch (e) {
-                console.log(e);
-                Alert.alert('Failed', 'Network Error, Kindly Connect to internet');
-                this.setState({ btnClicked: !this.state.btnClicked });
-            }
-        } else {
+        if (phone != "" && password != "" && email != "" && name != "") {
+            
+            navigate("Token");
+
+        }else {
             Toast.show({
                 text: 'Kindly fill all fields!',
                 buttonText: 'Okay',
                 duration: 3000,
-                position: "top"
+                position: "bottom"
             });
         }
 
-    }
 
-    forgot() {
-        alert("not avaliable");
-    }
 
-    register() {
-        alert("coming soon");
     }
 
     render() {
+        let { navigate } = this.props.navigation;
+
         return (
             <KeyboardAwareScrollView>
                 <Container style={styles.container}>
@@ -72,7 +56,7 @@ export default class Login extends Component<Props, State> {
 
                             <Item floatingLabel style={styles.input}>
                                 <Icon name='person' style={{ color: '#424242' }} />
-                                <Label>Fullname</Label>
+                                <Label>Username</Label>
                                 <Input
                                     placeholderTextColor="#424242"
                                     keyboardType="default"
@@ -112,10 +96,10 @@ export default class Login extends Component<Props, State> {
 
                         </Form>
 
-                        {this.state.btnClicked ? <Spinner color="#263238" /> :
+                        {this.state.btnClicked ?  <Spinner color="#263238" /> :
                             <Button block
                                 style={styles.btn}
-                                onPress={() => this.proceed()}>
+                                onPress={() => this._addToDatabase(navigate, this.state.phone, this.state.name, this.state.email, this.state.password, this.state.phone)}>
                                 <Text style={styles.btnText}> REGISTER </Text>
                             </Button>}
                     </View>

@@ -23,6 +23,12 @@ const styles: any = StyleSheet.create({
     //color: "white"
     marginBottom:5,
     borderBottomWidth:2
-  }
+  },
+  indicator: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 80
+    }
 });
 export default styles;

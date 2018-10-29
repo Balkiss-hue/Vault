@@ -11,10 +11,13 @@
     "native-base": "^2.8.0",
     "react": "16.4.1",
     "react-native": "0.56.0",
+    "react-native-document-picker": "^2.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.7.2",
+    "react-native-modal": "^6.5.0",
     "react-navigation": "^2.14.0",
     "react-navigation-drawer": "^0.5.0",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "rn-fetch-blob": "^0.10.13"
   },
   "devDependencies": {
     "babel-jest": "23.4.2",

@@ -1,40 +1,69 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, View, Alert, FlatList, StatusBar } from 'react-native';
+import { Text, View, Alert, FlatList, StatusBar, ActivityIndicator } from 'react-native';
 import { Container, Header, Content, Right, Body, Button, Icon, Card, CardItem, Title, Left, Subtitle, List, ListItem, Thumbnail, Fab } from "native-base";
 import styles from "./styles";
-
-import { DrawerActions } from 'react-navigation';
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
 type Props = {};
 export default class Dashboard extends Component<Props, State> {
-    
+
     static navigationOptions = {
-        drawerIcon:(<Icon name="home" />)
+        drawerIcon: (<Icon name="home" />)
     }
+
+    showPicker() {
+        // iPhone/Android
+        DocumentPicker.show({
+            filetype: [DocumentPickerUtil.allFiles()],
+        }, (error, res) => {
+            // Android
+             if(res != null){
+                console.log(
+                    res.uri,
+                    res.type, // mime type
+                    res.fileName,
+                    res.fileSize
+                );
+                Alert.alert('upload successfull', res.fileName);
+            } else {
+                console.log(error)
+            }
+        });
+    }
+    
+    // componentDidMount() {
+    //     BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
+    // }
+
+    // componentWillMount() {
+    //     BackHandler.removeEventListener();
+    // }
+    // onBackButtonPressAndroid = () => {
+    //     Alert.alert(
+    //         'Cancel',
+    //         'Are you sure you want to go back',
+    //         [
+    //             { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+    //             { text: 'OK', onPress: () => { BackHandler.exitApp() } },
+    //         ],
+    //         { cancelable: false }
+    //     )
+    //     return true;
+    // };
+
 
     constructor(props) {
         super(props);
         this.state = {
-            files: ["My CV.doc", "android.mkv", "TERM project.pdf", "images.jpg", "mya Tv.tv", "seriesa.ep", "TERMa project.pdf", "imagesa.jpg", "my Tvd.tv", "seriesf.ep"],
-            active: 'true'
+            files: {}
         };
     }
-    
-    signout() {
-        Alert.alert(
-            'Cancel',
-            'Are you sure you want to go back',
-            [
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                { text: 'OK', onPress: () => { this.props.navigation.goBack() } },
-            ],
-            { cancelable: false }
-        )
-    }
+
+
 
     render() {
-        let uri = `https://facebook.github.io/react/logo-og.png`;
+        let load = Object.values(this.state.files);
         return (
             <Container style={styles.container}>
                 <StatusBar
@@ -42,36 +71,28 @@ export default class Dashboard extends Component<Props, State> {
                     barStyle="light-content"
                 />
                 <Header style={styles.header}>
-                    <Body style={{marginLeft:10}}>
+                    <Body style={{ marginLeft: 10 }}>
                         <Title>Welcome Attasiem</Title>
                         <Subtitle>Dashboard</Subtitle>
                     </Body>
                     <Right>
-                        <Button transparent onPress={() => this.props.navigation.openDrawer() } >
+                        <Button transparent onPress={() => this.props.navigation.openDrawer()} >
                             <Icon name="menu" />
                         </Button>
                     </Right>
                 </Header>
-                <Content padder>
+                <Content>
                     <FlatList
-                        data={this.state.files}
+                        data={load}
                         renderItem={({ item, index }) => {
                             return (
-                                <View style={{ padding: 6 }}>
+                                <View style={{}}>
+                                    {console.log(load)}
                                     <List>
-                                        <ListItem thumbnail>
-                                            <Left>
-                                                <Thumbnail square source={{ uri: uri }} />
-                                            </Left>
+                                        <ListItem>
                                             <Body>
-                                                <Text>Attasiem</Text>
-                                                <Text note numberOfLines={1}>{item}</Text>
+                                                <Text>{item}</Text>
                                             </Body>
-                                            <Right>
-                                                <Button transparent>
-                                                    <Text>View</Text>
-                                                </Button>
-                                            </Right>
                                         </ListItem>
                                     </List>
                                 </View>
@@ -87,7 +108,7 @@ export default class Dashboard extends Component<Props, State> {
                     containerStyle={{}}
                     style={{ backgroundColor: "#263238" }}
                     position="bottomRight"
-                    onPress={() => this.setState({ active: !this.state.active })}>
+                    onPress={() => this.showPicker()}>
                     <Icon name="add" />
                 </Fab>
             </Container>

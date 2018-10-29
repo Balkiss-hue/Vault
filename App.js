@@ -8,6 +8,12 @@ import Dashboard from "./src/screen/Dashboard/DashboardScreen";
 import Token from "./src/screen/Token/TokenScreen";
 import Register from "./src/screen/Register/RegisterScreen";
 import Settings from "./src/screen/Settings/SettingsScreen";
+import Addfiles from "./src/screen/Addfiles/AddfilesScreen";
+
+
+
+
+
 
 
 
@@ -16,7 +22,7 @@ const CustomDrawerComponent = (props) => (
     <Header style={{height:200, backgroundColor: "#263238"}}>
       <Body style={{alignItems: 'center',}}>
         <Icon style={{fontSize:70, color:"white"}} name="lock" />
-        <Text style={{ fontSize:20, color:"white" }}>ATTASIEM</Text>
+        <Text style={{ fontSize:20, color:"white" }}>Vault</Text>
       </Body>
     </Header>
     <Content>
@@ -28,7 +34,8 @@ const CustomDrawerComponent = (props) => (
 const Drawer = createDrawerNavigator(
   {
     Dashboard: { screen: Dashboard },
-    Settings: { screen: Settings }
+    Settings: { screen: Settings },
+    Addfiles: { screen: Addfiles }
   }, {
     drawerPosition: "left",
     initialRouteName: "Dashboard",
@@ -46,7 +53,8 @@ const Stack = createStackNavigator(
     Login: { screen: Login },
     Token: { screen: Token },
     Dashboard: { screen: Drawer },
-    Register: { screen: Register }
+    Register: { screen: Register },
+    Addfiles: { screen: Addfiles }
   },
   {
     initialRouteName: "Login",

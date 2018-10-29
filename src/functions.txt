@@ -1,0 +1,110 @@
+signout() {
+        Alert.alert(
+            'Cancel',
+            'Are you sure you want to go back',
+            [
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'OK', onPress: () => { this.props.navigation.goBack() } },
+            ],
+            { cancelable: false }
+        )
+    }
+
+
+
+async proceed() {
+        if (this.state.email != "" && this.state.password != "") {
+            this.setState({ btnClicked: !this.state.btnClicked });
+            let url = `http://httpbin.org/post`
+            try {
+                const data = await axios.post(url,{
+                    email: this.state.email,
+                    password: this.state.password
+                })
+                this.setState({ btnClicked: !this.state.btnClicked });
+                console.log(data);
+                this.props.navigation.navigate("Token");
+            } catch (e) {
+                console.log(e);
+                Alert.alert('Failed', 'Network Error, Kindly Connect to internet');
+                this.setState({ btnClicked: !this.state.btnClicked });
+            }
+        } else {
+            Toast.show({
+                text: 'Kindly fill all fields!',
+                buttonText: 'Okay',
+                duration: 3000,
+                position: "top"
+            });
+        }
+
+    }
+
+
+    _retrieveData() {
+        
+        firebaseRef
+            .database()
+            .ref('users')
+            .orderByChild('email')
+            .equalTo(email)
+            .once('value', snap => console.log(snap.val()));
+
+    }
+
+
+ {this.state.btnClicked ? <Spinner color="#263238" /> :
+                                <Button block
+                                    style={styles.btn}
+                                    onPress={() => this.proceed()}>
+                                    <Text style={styles.btnText}> LOG IN </Text>
+                                </Button>}
+
+
+componentDidMount() {
+        console.log(this.props.navigation.state.params);
+        if(this.props.navigation.state.params){
+            firebaseRef
+            .database()
+            .ref('users/'+this.props.navigation.state.params.phone)
+            .once('value', snap => { this.setState({ files: snap.val() }) });
+        }else{
+            firebaseRef
+            .database()
+            .ref('users/08093702195')
+            .once('value', snap => { this.setState({ files: snap.val() }) });
+        }
+        
+    }
+
+
+
+    // symbol polyfills
+global.Symbol = require('core-js/es6/symbol');
+require('core-js/fn/symbol/iterator');
+
+// collection fn polyfills
+require('core-js/fn/map');
+require('core-js/fn/set');
+require('core-js/fn/array/find');
+
+ this.setState({ btnClicked: !this.state.btnClicked });
+            var phoneno = this.state.phone
+            firebaseRef.database().ref('users/' + userId).set({
+                username: name,
+                email: email,
+                passowrd: password,
+                phoneNumber: phone,
+                //profile_picture : imageUrl
+            }, function (error) {
+                if (error) {
+                    console.log(error);
+                    Alert.alert(error)
+                } else {
+                    Alert.alert("Data saved successfully");
+                    navigate("Dashboard", { phone: phoneno });
+                    
+                }
+                this.setState({ btnClicked: !this.state.btnClicked });
+            });
+            

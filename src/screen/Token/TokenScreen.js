@@ -50,6 +50,10 @@ export default class Token extends Component<Props, State> {
 
     }
 
+    sendToken(){
+        Alert.alert("Token sent!!")
+    }
+
     render() {
         return (
             <KeyboardAwareScrollView>
@@ -83,7 +87,7 @@ export default class Token extends Component<Props, State> {
                     </View>
                     <View style={{ justifyContent: "flex-end", flex: 0.1, margin: 5 }}>
                         <Button transparent
-                            onPress={() => this.proceed()}>
+                            onPress={() => this.sendToken()}>
                             <Text style={styles.linkTxt}>DIDN'T RECIEVE CODE</Text>
                         </Button>
                     </View>

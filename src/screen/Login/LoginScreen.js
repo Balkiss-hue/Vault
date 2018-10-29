@@ -4,7 +4,6 @@ import { Text, View, BackHandler, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Container, Header, Content, Form, Item, Input, Spinner, Button, Icon, Toast, Label, ToastAndroid } from "native-base";
 import styles from "./styles";
-
 import axios from "axios";
 
 
@@ -16,49 +15,27 @@ export default class Login extends Component<Props, State> {
 
         this.state = {
             btnClicked: false,
-            email: "",
+            phone: "",
             password: ""
         };
     }
 
-    // componentDidMount() {
-    //     BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
-    // }
-
-    // componentWillMount() {
-    //     BackHandler.removeEventListener();
-    // }
-
-    onBackButtonPressAndroid = () => {
-        Alert.alert(
-            'Cancel',
-            'Are you sure you want to go back',
-            [
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                { text: 'OK', onPress: () => { BackHandler.exitApp() } },
-            ],
-            { cancelable: false }
-        )
-        return true;
-    };
-
-   async proceed() {
-        if (this.state.email != "" && this.state.password != "") {
+   async _login(navigate) {
+        if (this.state.phone != "" && this.state.password != "") {
             this.setState({ btnClicked: !this.state.btnClicked });
             let url = `http://httpbin.org/post`;
-            // this.props.navigation.navigate("Dashboard");
             try {
                 const data = await axios.post(url,{
-                    email: this.state.email,
+                    phone: this.state.phone,
                     password: this.state.password
                 })
-                this.setState({ btnClicked: !this.state.btnClicked });
+                this.setState({ btnClicked: !this.state.btnClicked, password: ""  });
                 console.log(data);
-                this.props.navigation.navigate("Dashboard");
+                navigate("Dashboard");
             } catch (e) {
                 console.log(e);
                 Alert.alert('Failed', 'Network Error, Kindly Connect to internet');
-                this.setState({ btnClicked: !this.state.btnClicked });
+                this.setState({ btnClicked: !this.state.btnClicked, password: ""  });
             }
             
         } else {
@@ -73,7 +50,7 @@ export default class Login extends Component<Props, State> {
     }
 
     forgot() {
-        alert("not avaliable");
+        Alert.alert("not avaliable");
     }
 
     register() {
@@ -81,6 +58,7 @@ export default class Login extends Component<Props, State> {
     }
 
     render() {
+        let { navigate } = this.props.navigation;
         return (
             <KeyboardAwareScrollView>
                 <Container style={styles.container}>
@@ -92,13 +70,13 @@ export default class Login extends Component<Props, State> {
                         <Form style={{ justifyContent: "space-between", }}>
 
                             <Item floatingLabel style={styles.input}>
-                                <Icon name='mail' style={{ color: '#424242' }} />
-                                <Label>Email</Label>
+                                <Icon name='keypad' style={{ color: '#424242' }} />
+                                <Label>Phone</Label>
                                 <Input
                                     placeholderTextColor="#424242"
-                                    keyboardType="email-address"
+                                    keyboardType="phone-pad"
                                     style={{ color: "#424242" }}
-                                    onChangeText={(email) => this.setState({ email })} value={this.state.email} />
+                                    onChangeText={(phone) => this.setState({ phone })} value={this.state.phone} />
                             </Item>
 
                             <Item floatingLabel style={styles.input}>
@@ -115,7 +93,7 @@ export default class Login extends Component<Props, State> {
                             {this.state.btnClicked ? <Spinner color="#263238" /> :
                                 <Button block
                                     style={styles.btn}
-                                    onPress={() => this.proceed()}>
+                                    onPress={() => this._login(navigate)}>
                                     <Text style={styles.btnText}> LOG IN </Text>
                                 </Button>}
                             <Button transparent
