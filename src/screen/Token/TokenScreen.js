@@ -20,20 +20,31 @@ export default class Token extends Component<Props, State> {
         };
     }
 
+    componentWillMount(){
+        console.log(this.props)
+        console.log(this.props.navigation.state.params.details.details.phone)
+    }
+
     
 
     async proceed() {
         if (this.state.token != "") {
             this.setState({ btnClicked: !this.state.btnClicked });
-            let url = `http://httpbin.org/post`
+            let url = `https://rnvault.herokuapp.com/user/verify`;
             try {
-                const data = await axios.post(url,{
-                    email: this.state.email,
-                    password: this.state.password
-                })
+                const options ={
+                    method: 'POST',
+                    headers: {'content-type': 'application/json'},
+                    data: {
+                        'phone': ''+this.props.navigation.state.params.details.details.phone+'',
+                        'sms': this.state.token
+                    },
+                    url
+                }
+                const data = await axios(options)
                 this.setState({ btnClicked: !this.state.btnClicked });
                 console.log(data);
-                this.props.navigation.navigate("Dashboard");
+                this.props.navigation.navigate("Dashboard",{details: this.props.navigation.state.params.details});
             } catch (e) {
                 console.log(e);
                 Alert.alert('Failed', 'Network Error, Kindly Connect to internet');
@@ -57,8 +68,11 @@ export default class Token extends Component<Props, State> {
     render() {
         return (
             <KeyboardAwareScrollView>
+                <StatusBar
+                backgroundColor="#263238"
+                barStyle="light-content"
+                />
                 <Container style={styles.container}>
-
                     <View style={{ flex: 1, alignContent: "center", alignItems: "center", justifyContent: "center" }}>
                         <Icon name="mail" style={{ fontSize: 50, color: '#263238' }} />
                         <Text style={{ fontSize: 30, color: '#424242' }}>Enter SMS Code</Text>

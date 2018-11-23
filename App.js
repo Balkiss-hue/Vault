@@ -9,6 +9,8 @@ import Token from "./src/screen/Token/TokenScreen";
 import Register from "./src/screen/Register/RegisterScreen";
 import Settings from "./src/screen/Settings/SettingsScreen";
 import Addfiles from "./src/screen/Addfiles/AddfilesScreen";
+import FileDetails from "./src/screen/FileDetails/FileDetailsScreen";
+import ViewFile from "./src/screen/ViewFile/ViewFileScreen"
 
 
 
@@ -35,7 +37,7 @@ const Drawer = createDrawerNavigator(
   {
     Dashboard: { screen: Dashboard },
     Settings: { screen: Settings },
-    Addfiles: { screen: Addfiles }
+    // Addfiles: { screen: Addfiles }
   }, {
     drawerPosition: "left",
     initialRouteName: "Dashboard",
@@ -54,7 +56,9 @@ const Stack = createStackNavigator(
     Token: { screen: Token },
     Dashboard: { screen: Drawer },
     Register: { screen: Register },
-    Addfiles: { screen: Addfiles }
+    Addfiles: { screen: Addfiles },
+    FileDetails: { screen : FileDetails },
+    ViewFile: { screen : ViewFile }
   },
   {
     initialRouteName: "Login",

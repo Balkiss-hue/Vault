@@ -22,12 +22,34 @@ export default class Login extends Component<Props, State> {
         };
     }
 
-    _addToDatabase(navigate, userId, name, email, password, phone) {
+   async _addToDatabase(navigate, userId, name, email, password, phone) {
 
         if (phone != "" && password != "" && email != "" && name != "") {
-            
-            navigate("Token");
-
+            this.setState({ btnClicked: !this.state.btnClicked });
+            let url = `https://rnvault.herokuapp.com/user/signup`;
+            try {
+                const options ={
+                    method: 'POST',
+                    headers: {'content-type': 'application/json'},
+                    data: {
+                        'email': this.state.email,
+                        'password': this.state.password,
+                        'username': this.state.name,
+                        'phone': this.state.phone
+                    },
+                    url
+                }
+                const data = await axios(options)
+                this.setState({ btnClicked: !this.state.btnClicked, password: ""  });
+                console.log(data);
+                Alert.alert('Success', JSON.stringify(data.data.message))
+                navigate("Token",{details: data.data});
+            } catch (e) {
+                console.log(e);
+                Alert.alert('Failed', JSON.stringify(e.response.data.message))
+                //Alert.alert('Failed', 'Network Error, Kindly Connect to internet');
+                this.setState({ btnClicked: !this.state.btnClicked, password: ""  });
+            }
         }else {
             Toast.show({
                 text: 'Kindly fill all fields!',
@@ -46,12 +68,16 @@ export default class Login extends Component<Props, State> {
 
         return (
             <KeyboardAwareScrollView>
+                <StatusBar
+                backgroundColor="#263238"
+                barStyle="light-content"
+                />
                 <Container style={styles.container}>
                     <View style={{ justifyContent: "center", flex: 1, }}>
                         <Text style={{ fontSize: 70, fontWeight: "400", color: "#424242" }}>V<Icon name='lock' style={{ fontSize: 50, color: "#424242" }} />ult</Text>
                     </View>
 
-                    <View style={{ flex: 1, width: "80%" }}>
+                    <View style={{ flex: 1, width: "60%" }}>
                         <Form style={{ justifyContent: "space-between" }}>
 
                             <Item floatingLabel style={styles.input}>

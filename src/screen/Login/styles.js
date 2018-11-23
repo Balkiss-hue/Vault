@@ -16,7 +16,7 @@ const styles: any = StyleSheet.create({
   btnText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 16,
     
   },
   input: {
@@ -26,7 +26,7 @@ const styles: any = StyleSheet.create({
   },
   linkTxt: {
     color: "#424242",
-    fontSize: 14,
+    fontSize: 12,
     textAlign: "center"
   }
 });

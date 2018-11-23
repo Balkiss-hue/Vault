@@ -16,7 +16,7 @@ const styles: any = StyleSheet.create({
   btnText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 14,
   },
   input: {
     //color: "white"

@@ -108,3 +108,45 @@ require('core-js/fn/array/find');
                 this.setState({ btnClicked: !this.state.btnClicked });
             });
             
+
+
+let url = `https://rnvault.herokuapp.com/files`;
+                try {
+                    const options = {
+                        method: 'POST',
+                        data: {
+                            'userId': "5bdd8ca29029dd3dad85c2d4",
+                            'fileType': {
+                                'filePath': res.uri,
+                                'fileName': res.fileName,
+                                'fileType': res.type,
+                                'fileSize': res.fileSize
+                            }
+                        },
+                        url
+                    }
+                    const data = axios(options)
+                    console.log(data);
+                } catch (e) {
+                    console.log(e)
+                }
+
+                // componentDidMount() {
+    //     BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
+    // }
+
+    // componentWillMount() {
+    //     BackHandler.removeEventListener();
+    // }
+    // onBackButtonPressAndroid = () => {
+    //     Alert.alert(
+    //         'Cancel',
+    //         'Are you sure you want to go back',
+    //         [
+    //             { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+    //             { text: 'OK', onPress: () => { BackHandler.exitApp() } },
+    //         ],
+    //         { cancelable: false }
+    //     )
+    //     return true;
+    // };

@@ -1,9 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, View, Alert, FlatList, StatusBar, ActivityIndicator } from 'react-native';
+import { Text, View, Alert, FlatList,Linking , StatusBar, ActivityIndicator, WebView, ScrollView } from 'react-native';
 import { Container, Header, Content, Right, Body, Button, Icon, Card, CardItem, Title, Left, Subtitle, List, ListItem, Thumbnail, Fab } from "native-base";
 import styles from "./styles";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import axios from 'axios';
+import RNFetchBlob from 'rn-fetch-blob'
+import { ScrollableComponent } from 'react-native-keyboard-aware-scroll-view';
 
 type Props = {};
 export default class Dashboard extends Component<Props, State> {
@@ -12,67 +15,71 @@ export default class Dashboard extends Component<Props, State> {
         drawerIcon: (<Icon name="home" />)
     }
 
-    showPicker() {
-        // iPhone/Android
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
-            // Android
-             if(res != null){
-                console.log(
-                    res.uri,
-                    res.type, // mime type
-                    res.fileName,
-                    res.fileSize
-                );
-                Alert.alert('upload successfull', res.fileName);
-            } else {
-                console.log(error)
-            }
-        });
+
+
+    async componentWillMount() {
+        this._getList()
+        console.log(this.props)
     }
-    
-    // componentDidMount() {
-    //     BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
-    // }
 
-    // componentWillMount() {
-    //     BackHandler.removeEventListener();
-    // }
-    // onBackButtonPressAndroid = () => {
-    //     Alert.alert(
-    //         'Cancel',
-    //         'Are you sure you want to go back',
-    //         [
-    //             { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-    //             { text: 'OK', onPress: () => { BackHandler.exitApp() } },
-    //         ],
-    //         { cancelable: false }
-    //     )
-    //     return true;
-    // };
-
+    onRefresh() {
+        this.setState({ isFetching: true }, function () { this._getList() });
+    }
 
     constructor(props) {
         super(props);
         this.state = {
-            files: {}
+            files: [],
+            isFetching: false
         };
+    }
+
+    async _getList() {
+        const load = {
+            userId: this.props.navigation.state.params.details.userId,
+            token: this.props.navigation.state.params.details.token,
+            name: this.props.navigation.state.params.details.username
+        }
+        let url = `https://rnvault.herokuapp.com/files/user/` + load.userId;
+
+        try {
+            const options = {
+                method: 'GET',
+                headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + load.token + '' },
+                url
+            }
+            const data = await axios(options)
+            console.log(data.data.file);
+            this.setState({ files: data.data.fileInfo, isFetching: false });
+            console.log(this.state.files)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async _accessItem(item) {
+        this.props.navigation.navigate('FileDetails', { load: item })
+    }
+
+
+    uploadTostore() {
+
     }
 
 
 
     render() {
-        let load = Object.values(this.state.files);
+        // let load = Object.values(this.state.files);
+     
         return (
             <Container style={styles.container}>
                 <StatusBar
-                    backgroundColor="#263238"
-                    barStyle="light-content"
+                backgroundColor="#263238"
+                barStyle="light-content"
                 />
                 <Header style={styles.header}>
                     <Body style={{ marginLeft: 10 }}>
-                        <Title>Welcome Attasiem</Title>
+                        <Title>Welcome {this.props.navigation.state.params.details.username}</Title>
                         <Subtitle>Dashboard</Subtitle>
                     </Body>
                     <Right>
@@ -81,34 +88,49 @@ export default class Dashboard extends Component<Props, State> {
                         </Button>
                     </Right>
                 </Header>
-                <Content>
+                <ScrollView 
+                style={{flex:1}}
+                 onRefresh={() => this.onRefresh()}
+                 refreshing={this.state.isFetching}>
+                    <Content padder>
                     <FlatList
-                        data={load}
-                        renderItem={({ item, index }) => {
+                        data={this.state.files}
+                        renderItem={({ item }) => {
                             return (
                                 <View style={{}}>
-                                    {console.log(load)}
-                                    <List>
-                                        <ListItem>
-                                            <Body>
-                                                <Text>{item}</Text>
-                                            </Body>
-                                        </ListItem>
-                                    </List>
+                                    <Card>
+                                        <CardItem thumbnail onPress={() => { this._accessItem(item) }}>
+                                            <Left>
+                                                <Body>
+                                                    <Text onPress={() => { this._accessItem(item) }}>{item.fileName}</Text>
+                                                    <Text note>{item.fileSize}KB</Text>
+                                                </Body>
+                                            </Left>
+                                            <Right>
+                                                <Button transparent
+                                                    onPress={() => Linking.openURL('https://rnvault.herokuapp.com/' + item.filePath + '')}>
+                                                    <Text style={{ color: "#263238", fontWeight: "bold", fontSize: 14 }}>View</Text>
+                                                </Button>
+                                            </Right>
+                                        </CardItem>
+                                    </Card>
                                 </View>
                             );
                         }}
-                        keyExtractor={(item, index) => item}
+                        keyExtractor={item => item._id}
+                        onRefresh={() => this.onRefresh()}
+                        refreshing={this.state.isFetching}
                     >
                     </FlatList>
                 </Content>
+                </ScrollView> 
                 <Fab
                     active={this.state.active}
                     direction="up"
                     containerStyle={{}}
                     style={{ backgroundColor: "#263238" }}
-                    position="bottomRight"
-                    onPress={() => this.showPicker()}>
+                    position="bottomLeft"
+                    onPress={() => this.props.navigation.navigate('Addfiles', { userId: this.props.navigation.state.params.details.userId })}>
                     <Icon name="add" />
                 </Fab>
             </Container>
