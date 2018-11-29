@@ -5,7 +5,7 @@ const styles: any = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#EEEEEE',
+        backgroundColor: '#fff',
         
       },
   btn: {
@@ -22,7 +22,8 @@ const styles: any = StyleSheet.create({
   input: {
     //color: "white"
     marginBottom:5,
-    borderBottomWidth:2
+    borderBottomWidth:1,
+    borderBottomColor: "#263238"
   },
   indicator: {
       flex: 1,

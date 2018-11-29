@@ -5,7 +5,7 @@ const styles: any = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#fff',
   },
   btn: {
     backgroundColor: "#263238",
@@ -21,10 +21,11 @@ const styles: any = StyleSheet.create({
   input: {
     //color: "white"
     marginBottom: 10,
-    borderBottomWidth: 2
+    borderBottomWidth:1,
+    borderBottomColor: "#263238"
   },
   txt: {
-    //color: "white",
+    color: "#263238",
     fontSize: 14,
     textAlign: "center",
     fontWeight: "bold",

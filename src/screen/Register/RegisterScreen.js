@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, View, BackHandler, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, Alert,BackHandler, ActivityIndicator, StatusBar, ToastAndroid } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Container, Header, Content, Label, Form, Item, Input, Spinner, Button, Icon, Toast, ToastAndroid } from "native-base";
+import { Container, Header, Content, Label, Form, Item, Input, Spinner, Button, Icon, Toast, } from "native-base";
 import styles from "./styles";
 import axios from "axios";
 
@@ -20,48 +20,57 @@ export default class Login extends Component<Props, State> {
             password: "",
             phone: ""
         };
+        
     }
 
-   async _addToDatabase(navigate, userId, name, email, password, phone) {
+    
+    
 
-        if (phone != "" && password != "" && email != "" && name != "") {
+    async _signUp(navigate) {
+        const { name, email, phone, password } = this.state;
+        let reg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
+        if (name == "" && email == "" && phone == "" && password == "")
+            return ToastAndroid.show('Kindly fill all fields', ToastAndroid.SHORT);
+
+        if (reg.test(email) == 0)
+            return ToastAndroid.show('Email is incorrect', ToastAndroid.SHORT);
+
+        if (phone.length != 11)
+            return ToastAndroid.show('phone number must be 11 digits', ToastAndroid.SHORT);
+
+        if (password.length < 5)
+            return ToastAndroid.show('Password must be at least 5 digits', ToastAndroid.SHORT);
+
+        try {
             this.setState({ btnClicked: !this.state.btnClicked });
             let url = `https://rnvault.herokuapp.com/user/signup`;
-            try {
-                const options ={
-                    method: 'POST',
-                    headers: {'content-type': 'application/json'},
-                    data: {
-                        'email': this.state.email,
-                        'password': this.state.password,
-                        'username': this.state.name,
-                        'phone': this.state.phone
-                    },
-                    url
-                }
-                const data = await axios(options)
-                this.setState({ btnClicked: !this.state.btnClicked, password: ""  });
-                console.log(data);
-                Alert.alert('Success', JSON.stringify(data.data.message))
-                navigate("Token",{details: data.data});
-            } catch (e) {
-                console.log(e);
-                Alert.alert('Failed', JSON.stringify(e.response.data.message))
-                //Alert.alert('Failed', 'Network Error, Kindly Connect to internet');
-                this.setState({ btnClicked: !this.state.btnClicked, password: ""  });
+            const options = {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                data: {
+                    'email': email,
+                    'password': password,
+                    'username': name,
+                    'phone': phone
+                },
+                url
             }
-        }else {
-            Toast.show({
-                text: 'Kindly fill all fields!',
-                buttonText: 'Okay',
-                duration: 3000,
-                position: "bottom"
-            });
+            const data = await axios(options)
+            this.setState({ btnClicked: !this.state.btnClicked, password: "" });
+            console.log(data);
+            Alert.alert('Success', JSON.stringify(data.data.message))
+            navigate("Token", { details: data.data });
+        } catch (e) {
+            console.log(e);
+            //Alert.alert('Failed', JSON.stringify(e.response.data.message))
+            Alert.alert('Failed', 'Network Error, Kindly Connect to internet');
+            this.setState({ btnClicked: !this.state.btnClicked, password: "" });
         }
 
-
-
     }
+
+
 
     render() {
         let { navigate } = this.props.navigation;
@@ -69,67 +78,65 @@ export default class Login extends Component<Props, State> {
         return (
             <KeyboardAwareScrollView>
                 <StatusBar
-                backgroundColor="#263238"
-                barStyle="light-content"
+                    backgroundColor="#263238"
+                    barStyle="light-content"
                 />
                 <Container style={styles.container}>
-                    <View style={{ justifyContent: "center", flex: 1, }}>
-                        <Text style={{ fontSize: 70, fontWeight: "400", color: "#424242" }}>V<Icon name='lock' style={{ fontSize: 50, color: "#424242" }} />ult</Text>
-                    </View>
 
-                    <View style={{ flex: 1, width: "60%" }}>
+                    <View style={{ flex: 1, width: "80%", justifyContent: "flex-end" }}>
+                    <Text style={{ fontSize: 40, fontWeight: "100", color: "#263238", textAlign: "center" }}>create account</Text>
                         <Form style={{ justifyContent: "space-between" }}>
-
                             <Item floatingLabel style={styles.input}>
-                                <Icon name='person' style={{ color: '#424242' }} />
+                                <Icon name='person' style={{ color: '#263238' }} />
                                 <Label>Username</Label>
                                 <Input
-                                    placeholderTextColor="#424242"
+                                    placeholderTextColor="#263238"
                                     keyboardType="default"
-                                    style={{ color: "#424242" }}
+                                    style={{ color: "#263238" }}
                                     onChangeText={(name) => this.setState({ name })} value={this.state.name} />
                             </Item>
 
                             <Item floatingLabel style={styles.input}>
-                                <Icon name='mail' style={{ color: '#424242' }} />
+                                <Icon name='mail' style={{ color: '#263238' }} />
                                 <Label>Email</Label>
                                 <Input
-                                    placeholderTextColor="#424242"
+                                    placeholderTextColor="#263238"
                                     keyboardType="email-address"
-                                    style={{ color: "#424242" }}
+                                    style={{ color: "#263238" }}
                                     onChangeText={(email) => this.setState({ email })} value={this.state.email} />
                             </Item>
 
                             <Item floatingLabel style={styles.input}>
-                                <Icon name='keypad' style={{ color: '#424242' }} />
+                                <Icon name='md-phone-portrait' style={{ color: '#263238' }} />
                                 <Label>Phone number</Label>
                                 <Input
-                                    placeholderTextColor="#424242"
+                                    placeholderTextColor="#263238"
                                     keyboardType="phone-pad"
-                                    style={{ color: "#424242" }}
+                                    style={{ color: "#263238" }}
+                                    maxLength = {11}
                                     onChangeText={(phone) => this.setState({ phone })} value={this.state.phone} />
                             </Item>
 
                             <Item floatingLabel style={styles.input}>
-                                <Icon name='lock' style={{ color: '#424242' }} />
+                                <Icon name='lock' style={{ color: '#263238' }} />
                                 <Label>Password</Label>
                                 <Input
-                                    placeholderTextColor="#424242"
+                                    placeholderTextColor="#263238"
                                     secureTextEntry={true}
-                                    style={{ color: "#424242" }}
+                                    style={{ color: "#263238" }}
                                     onChangeText={(password) => this.setState({ password })} value={this.state.password} />
                             </Item>
 
                         </Form>
 
-                        {this.state.btnClicked ?  <Spinner color="#263238" /> :
-                            <Button block
+                        {this.state.btnClicked ? <Spinner color="#263238" /> :
+                            <Button block rounded
                                 style={styles.btn}
-                                onPress={() => this._addToDatabase(navigate, this.state.phone, this.state.name, this.state.email, this.state.password, this.state.phone)}>
-                                <Text style={styles.btnText}> REGISTER </Text>
+                                onPress={() => this._signUp(navigate)}>
+                                <Text style={styles.btnText}> CREATE </Text>
                             </Button>}
                     </View>
-                    <View style={{ justifyContent: "flex-end", flex: 1 }}>
+                    <View style={{ justifyContent: "flex-end", flex: 0.1 }}>
                     </View>
                 </Container>
             </KeyboardAwareScrollView>

@@ -150,3 +150,55 @@ let url = `https://rnvault.herokuapp.com/files`;
     //     )
     //     return true;
     // };
+
+
+
+
+ <TouchableHighlight
+                            style={styles.btn}
+                            onPress={this.clickHandler}
+                            underlayColor="#0380BE"
+                            activeOpacity={1}
+                        >
+                            <Text style={{
+                                color: '#fff',
+                                fontWeight: '600'
+                            }}>
+                                {`Authenticate with ${this.state.biometryType}`}
+                            </Text>
+                        </TouchableHighlight>
+
+
+function authenticate() {
+    return TouchID.authenticate()
+        .then(success => {
+            Alert.alert('Authenticated Successfully');
+        })
+        .catch(error => {
+            console.log(error)
+            Alert.alert(error.message);
+        });
+}
+
+TouchID.isSupported()
+            .then(biometryType => {
+                this.setState({ biometryType });
+                console.log(biometryType)
+            })
+
+
+             optionalConfigObject = {
+        title: "Authentication Required", // Android
+        color: "#e00606", // Android,
+        fallbackLabel: "Show Passcode" // iOS (if empty, then label is hidden)
+    }
+
+
+    clickHandler() {
+        TouchID.isSupported()
+            .then(authenticate)
+            .catch(error => {
+                Alert.alert('TouchID not supported');
+                console.log(error)
+            });
+    }

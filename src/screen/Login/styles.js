@@ -5,7 +5,7 @@ const styles: any = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#EEEEEE', 
+        backgroundColor: '#FFF', 
       },
   btn: {
     backgroundColor: "#263238",
@@ -14,7 +14,7 @@ const styles: any = StyleSheet.create({
     marginBottom:5
   },
   btnText: {
-    color: "white",
+    color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
     
@@ -22,12 +22,8 @@ const styles: any = StyleSheet.create({
   input: {
     //color: "white"
     marginBottom:5,
-    borderBottomWidth:2
-  },
-  linkTxt: {
-    color: "#424242",
-    fontSize: 12,
-    textAlign: "center"
+    borderBottomWidth:1,
+    borderBottomColor: "#263238"
   }
 });
 export default styles;

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, View, Alert } from 'react-native';
+import { Text, View, Alert, StatusBar } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Container, Header, Content, Form, Item, Input, Spinner, Button, Icon,Label, Toast, ToastAndroid, Body, Left, Title } from "native-base";
 import styles from "./styles";
@@ -75,19 +75,19 @@ export default class Token extends Component<Props, State> {
                 <Container style={styles.container}>
                     <View style={{ flex: 1, alignContent: "center", alignItems: "center", justifyContent: "center" }}>
                         <Icon name="mail" style={{ fontSize: 50, color: '#263238' }} />
-                        <Text style={{ fontSize: 30, color: '#424242' }}>Enter SMS Code</Text>
+                        <Text style={{ fontSize: 30, color: '#263238' }}>Enter SMS Token</Text>
                     </View>
                     <View style={{ flex: 1, alignContent: "center", width: "70%", alignSelf: "center" }}>
-                        <Text style={styles.txt}>Please check your phone and email you have recieved a message from us with your token</Text>
+                        <Text style={styles.txt}>Please check your phone or email a message was sent to you with your token</Text>
                         <Form>
                             <Item floatingLabel
                                 style={styles.input}>
-                                <Icon name='lock' style={{ color: '#424242' }} />
-                                <Label>SMS code</Label>
+                                <Icon name='md-mail' style={{ color: '#263238' }} />
+                                <Label>SMS token</Label>
                                 <Input
-                                    placeholderTextColor="#424242"
+                                    placeholderTextColor="#263238"
                                     keyboardType="numeric"
-                                    style={{ color: "#424242" }}
+                                    style={{ color: "#263238" }}
                                     onChangeText={(token) => this.setState({ token })} value={this.state.token} />
                             </Item>
 

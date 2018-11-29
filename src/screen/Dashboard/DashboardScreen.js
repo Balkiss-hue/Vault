@@ -1,12 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, View, Alert, FlatList,Linking , StatusBar, ActivityIndicator, WebView, ScrollView } from 'react-native';
+import { Text, View, Alert, FlatList,Linking , StatusBar, ActivityIndicator, WebView, BackHandler, ScrollView } from 'react-native';
 import { Container, Header, Content, Right, Body, Button, Icon, Card, CardItem, Title, Left, Subtitle, List, ListItem, Thumbnail, Fab } from "native-base";
 import styles from "./styles";
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import axios from 'axios';
-import RNFetchBlob from 'rn-fetch-blob'
-import { ScrollableComponent } from 'react-native-keyboard-aware-scroll-view';
 
 type Props = {};
 export default class Dashboard extends Component<Props, State> {
@@ -15,10 +12,26 @@ export default class Dashboard extends Component<Props, State> {
         drawerIcon: (<Icon name="home" />)
     }
 
-
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
+    }
+    
+    onBackButtonPressAndroid = () => {
+        Alert.alert(
+            'Cancel',
+            'Are you sure you want to go back',
+            [
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'OK', onPress: () => { this.props.navigation.goBack(null) } },
+            ],
+            { cancelable: false }
+        )
+        return true;
+    };
 
     async componentWillMount() {
-        this._getList()
+        this._getList();
+        BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
         console.log(this.props)
     }
 
@@ -32,6 +45,7 @@ export default class Dashboard extends Component<Props, State> {
             files: [],
             isFetching: false
         };
+        this.onBackButtonPressAndroid = this.onBackButtonPressAndroid.bind(this);
     }
 
     async _getList() {
